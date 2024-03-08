@@ -14,7 +14,7 @@ import Avatarr from './avatar';
  * um botão que permite excluir o item da lista de pessoas.
  */
 export default function Lista() {
-  const { pessoas, pessoaSelecionada, selecionarPessoa, removerPessoa } =
+  const { pessoas, pessoaSelecionada, selecionarPessoa, pessoasFiltradas, removerPessoa, filtroAtivo  } =
     useAppContext();
 
   const { colors, isV3 } = useTheme();
@@ -73,17 +73,31 @@ export default function Lista() {
           </View>
         </List.Subheader>
       </List.Section>
-      <FlatList
-        data={pessoas}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={Divider}
-        ListEmptyComponent={() => (
-          <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
-            Nenhuma pessoa cadastrada até o momento
-          </Text>
-        )}
-      />
+      {filtroAtivo ? (
+        <FlatList
+          data={pessoasFiltradas}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          ItemSeparatorComponent={Divider}
+          ListEmptyComponent={() => (
+            <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
+              Nenhum resultado encontrado com a filtragem
+            </Text>
+          )}
+        />
+      ) : (
+        <FlatList
+          data={pessoas}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          ItemSeparatorComponent={Divider}
+          ListEmptyComponent={() => (
+            <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
+              Nenhuma pessoa cadastrada com esse nome
+            </Text>
+          )}
+        />
+      )}
       <ExcluirModal visible={visible} hideModal={hideModal} excluirPessoa={excluirPessoa} removerPessoa={removerPessoa}/>
     </View>
   );

@@ -8,6 +8,7 @@ import { AppProvider } from './componentes/provider';
 import Formulario from './componentes/formulario';
 import Lista from './componentes/lista';
 import Sobre from './componentes/sobre';
+import Filtro from './componentes/filtro';
 
 export default function App() {
   const [notificacaoVisivel, setNotificacaoVisivel] = useState(false);
@@ -31,6 +32,7 @@ export default function App() {
           </Appbar.Header>
 
           <Formulario />
+          <Filtro />
           <Lista />
           <Sobre visible={visible} hideModal={hideModal}/>
 

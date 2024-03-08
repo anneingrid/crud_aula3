@@ -21,6 +21,8 @@ export function AppProvider({
 }) {
   const [pessoas, setPessoas] = useState([]);
   const [pessoaSelecionada, setPessoaSelecionada] = useState();
+  const [pessoasFiltradas, setpessoasFiltradas] = useState([]);
+  const [filtroAtivo, setFiltroAtivo] = useState();
 
   /**
    * Esta função recebe um parâmetro `nome`, cria um objeto 
@@ -50,6 +52,7 @@ export function AppProvider({
    * 
    * @param pessoa `{id, nome}`
    */
+
   const removerPessoa = (pessoa) => {
     const lista = pessoas.filter((p) => p.id != pessoa.id);
     setPessoas(lista);
@@ -67,6 +70,7 @@ export function AppProvider({
    * 
    * Dispara o evento `onSelecionarPessoa`
    */
+
   const selecionarPessoa = (pessoa) => {
     if (pessoaSelecionada?.id == pessoa.id) {
       setPessoaSelecionada(null);
@@ -78,14 +82,37 @@ export function AppProvider({
     }
   };
 
+  /**
+   * Esta função recebe um parâmetro `nome`, verifica se o nome está vazio
+   * caso esteja atribui ao setFiltroAtivo o estado de FALSE e aparece todos os nomes da lista, 
+   * caso contrario faz uma busca na lista de pessoas usando como parametro 
+   * o nome e coloca em uma nova lista e atribui ao setFiltroAtivo o estado de TRUE. 
+   * 
+   * 
+   * @param nome String
+   */
+  const buscarPessoa = (nome) => {
+    if (nome == '') {
+        setFiltroAtivo(false);
+    }
+    else {
+        setFiltroAtivo(true);
+        let listaDeNovasPessoas = pessoas.filter(pessoaDaLista => pessoaDaLista.nome.startsWith(nome));
+        setpessoasFiltradas(listaDeNovasPessoas);
+    }
+}
+
   return (
     <AppContext.Provider
       value={{
         pessoas,
+        pessoasFiltradas,
         adicionarPessoa,
         removerPessoa,
         selecionarPessoa,
+        buscarPessoa,
         pessoaSelecionada,
+        filtroAtivo
       }}>
       {children}
     </AppContext.Provider>
