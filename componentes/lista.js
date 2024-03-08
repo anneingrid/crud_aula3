@@ -1,7 +1,9 @@
+import * as React from 'react';
 import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
 import { List, Text, IconButton, Divider, useTheme } from 'react-native-paper';
 import { useAppContext } from './provider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ExcluirModal from './excluirModal';
 
 /**
  * Este componente apresenta a lista de pessoas cadastradas.
@@ -17,6 +19,11 @@ export default function Lista() {
   const { colors, isV3 } = useTheme();
   const safeArea = useSafeAreaInsets();
 
+  const [visible, setVisible] = React.useState(false);
+  const [excluirPessoa, setExcluirPessoa] = React.useState({});
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
   /**
    * Esta função é utilizada para renderizar um item da lista.
    * Se o item da lista estiver selecionado, então adota
@@ -26,12 +33,13 @@ export default function Lista() {
    */
   const renderItem = ({ item }) => {
     const selecionado = item.id == pessoaSelecionada?.id;
+    setExcluirPessoa(pessoaSelecionada);
     const BotaoRemover = () => {
       return (
         <IconButton
           icon="trash-can-outline"
           mode="contained"
-          onPress={() => removerPessoa(pessoaSelecionada)}
+          onPress={() => showModal()}
         />
       );
     };
@@ -40,7 +48,8 @@ export default function Lista() {
         title={item.nome}
         style={selecionado && styles.item_selecionado}
         onPress={() => selecionarPessoa(item)}
-        right={selecionado && BotaoRemover}></List.Item>
+        right={selecionado && BotaoRemover}>
+      </List.Item>
     );
   };
   return (
@@ -71,12 +80,13 @@ export default function Lista() {
           </Text>
         )}
       />
+      <ExcluirModal visible={visible} hideModal={hideModal} excluirPessoa={excluirPessoa} removerPessoa={removerPessoa}/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, minHeight:200 },
+  container: { flex: 1, minHeight: 200 },
   lista_mensagem_vazio: { marginHorizontal: 16 },
   cabecalho: {
     flex: 1,
