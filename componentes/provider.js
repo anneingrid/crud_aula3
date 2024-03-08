@@ -18,12 +18,13 @@ export function AppProvider({
   onAdicionarPessoa,
   onSelecionarPessoa,
   onRemoverPessoa,
+  onEditarPessoa
 }) {
   const [pessoas, setPessoas] = useState([]);
   const [pessoaSelecionada, setPessoaSelecionada] = useState();
   const [pessoasFiltradas, setpessoasFiltradas] = useState([]);
   const [filtroAtivo, setFiltroAtivo] = useState();
-
+  const [editarPessoaSelecionada, setEditarPessoaSelecionada] = useState();
   /**
    * Esta função recebe um parâmetro `nome`, cria um objeto 
    * com `id` igual ao timestamp atual e o adiciona
@@ -63,6 +64,21 @@ export function AppProvider({
       onRemoverPessoa(pessoa);
     }
   };
+
+  
+  const editarPessoa = (pessoa, novoNome) => {
+    console.log(nome); 
+    const lista = pessoas.map((p) =>
+      p.id === pessoa.id ? { ...p, nome: novoNome } : p
+    );
+    setPessoas(lista);
+    if (onEditarPessoa) {
+      onEditarPessoa(pessoa, novoNome);
+    }
+    
+  };
+  
+
 
   /**
    * Esta função recebe um parâmetro `pessoa` e determina
@@ -112,7 +128,8 @@ export function AppProvider({
         selecionarPessoa,
         buscarPessoa,
         pessoaSelecionada,
-        filtroAtivo
+        filtroAtivo,
+        editarPessoa
       }}>
       {children}
     </AppContext.Provider>

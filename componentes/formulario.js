@@ -1,6 +1,6 @@
 import { View, StyleSheet, Platform, SafeAreaView } from 'react-native';
 import { Card, TextInput, Button } from 'react-native-paper';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useAppContext } from './provider';
 
 /**
@@ -16,7 +16,7 @@ export default function Formulario() {
    * Uma referência para acessar o input e definir
    * o foco de forma programática
    */
-  const nomeRef = useRef();
+  // const nomeRef = useRef();
 
   /**
    * Esta função utiliza o nome fornecido como entrada no input
@@ -27,9 +27,9 @@ export default function Formulario() {
     if (nome.length != 0) {
       adicionarPessoa(nome.trim());
       setNome('');
-      if (Platform.OS == "web") {
-        nomeRef.focus();
-      }
+      // if (Platform.OS == "web") {
+      //   nomeRef.focus();
+      // }
     }
   };
 
@@ -39,7 +39,7 @@ export default function Formulario() {
         <Card.Content>
           <SafeAreaView style={{height:55}}>
           <TextInput
-            ref={nomeRef}
+            // ref={nomeRef}
             label="Nome"
             style={styles.input_nome}
             value={nome}

@@ -4,6 +4,7 @@ import { List, Text, IconButton, Divider, useTheme, Avatar } from 'react-native-
 import { useAppContext } from './provider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ExcluirModal from './excluirModal';
+import EditarModal from './editarModal';
 import Avatarr from './avatar';
 
 /**
@@ -14,16 +15,26 @@ import Avatarr from './avatar';
  * um botão que permite excluir o item da lista de pessoas.
  */
 export default function Lista() {
-  const { pessoas, pessoaSelecionada, selecionarPessoa, pessoasFiltradas, removerPessoa, filtroAtivo  } =
+  const { pessoas, pessoaSelecionada, selecionarPessoa, pessoasFiltradas, removerPessoa, editarPessoa, filtroAtivo  } =
     useAppContext();
 
   const { colors, isV3 } = useTheme();
   const safeArea = useSafeAreaInsets();
 
   const [visible, setVisible] = React.useState(false);
-  const [excluirPessoa, setExcluirPessoa] = React.useState({});
+  const [pessoaEditarExcluir, setPessoaEditarExcluir] = React.useState({});
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+
+
+  const [visibleEditar, setVisibleEditar] = React.useState(false);
+  const showModalEditar = () => { 
+    setVisibleEditar(true);  };
+  const hideModalEditar = () => {
+    setVisibleEditar(false);
+  
+  };
+
 
   /**
    * Esta função é utilizada para renderizar um item da lista.
@@ -34,7 +45,7 @@ export default function Lista() {
    */
   const renderItem = ({ item }) => {
     const selecionado = item.id == pessoaSelecionada?.id;
-    setExcluirPessoa(pessoaSelecionada);
+    setPessoaEditarExcluir(pessoaSelecionada);
     const BotaoRemover = () => {
       return (
         <IconButton
@@ -44,6 +55,17 @@ export default function Lista() {
         />
       );
     };
+    
+    const BotaoEditar = () => {
+      return (
+        <IconButton
+          icon="pencil"
+          mode="contained"
+          onPress={() => showModalEditar(item)} 
+        />
+      );
+    };
+
     return (
       <List.Item
         title={item.nome}
@@ -52,7 +74,11 @@ export default function Lista() {
           <Avatarr nome={item.nome}/>
         )}
         onPress={() => selecionarPessoa(item)}
-        right={selecionado && BotaoRemover}>
+        right={() => (
+          <View style={styles.botoesContainer}>
+            {selecionado && <BotaoEditar />}
+            {selecionado && <BotaoRemover />}
+          </View>)}>
       </List.Item>
     );
   };
@@ -98,7 +124,8 @@ export default function Lista() {
           )}
         />
       )}
-      <ExcluirModal visible={visible} hideModal={hideModal} excluirPessoa={excluirPessoa} removerPessoa={removerPessoa}/>
+      <ExcluirModal visible={visible} hideModal={hideModal} excluirPessoa={pessoaEditarExcluir} removerPessoa={removerPessoa}/>
+      <EditarModal visible={visibleEditar} hideModal={hideModalEditar} editarPessoa={pessoaEditarExcluir} functionEditar={editarPessoa}/>
     </View>
   );
 }
