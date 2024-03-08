@@ -3,12 +3,9 @@ import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
 import { List, Text, IconButton, Divider, useTheme, Avatar } from 'react-native-paper';
 import { useAppContext } from './provider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-<<<<<<< Updated upstream
 import ExcluirModal from './excluirModal';
-
-=======
 import Avatarr from './avatar';
->>>>>>> Stashed changes
+
 /**
  * Este componente apresenta a lista de pessoas cadastradas.
  *
