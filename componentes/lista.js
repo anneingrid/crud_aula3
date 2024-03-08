@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
-import { List, Text, IconButton, Divider, useTheme } from 'react-native-paper';
+import { List, Text, IconButton, Divider, useTheme, Avatar } from 'react-native-paper';
 import { useAppContext } from './provider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+<<<<<<< Updated upstream
 import ExcluirModal from './excluirModal';
 
+=======
+import Avatarr from './avatar';
+>>>>>>> Stashed changes
 /**
  * Este componente apresenta a lista de pessoas cadastradas.
  *
@@ -47,6 +51,9 @@ export default function Lista() {
       <List.Item
         title={item.nome}
         style={selecionado && styles.item_selecionado}
+        left={() => (
+          <Avatarr nome={item.nome}/>
+        )}
         onPress={() => selecionarPessoa(item)}
         right={selecionado && BotaoRemover}>
       </List.Item>
