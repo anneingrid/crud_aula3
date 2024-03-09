@@ -11,7 +11,7 @@ export default function ExcluirModal({ visible, hideModal, excluirPessoa, remove
             <View style={styles.container}>
             <Text style={styles.text}>Deseja excluir?
             </Text>
-                <Button style={styles.button} icon="close" mode="contained" onPress={() => {removerPessoa(excluirPessoa), hideModal()} } >
+                <Button style={styles.button} icon="check" mode="contained" onPress={() => {removerPessoa(excluirPessoa), hideModal()} } >
                     Sim
                 </Button>
                 <Button style={styles.button} icon="close" mode="contained" onPress={() => hideModal()} >

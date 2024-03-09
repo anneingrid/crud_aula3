@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Appbar, Snackbar } from 'react-native-paper';
 import { useState } from 'react';
@@ -20,6 +20,7 @@ export default function App() {
   const hideModal = () => setVisible(false);
 
   return (
+    <>
     <SafeAreaProvider>
       <AppProvider
         onAdicionarPessoa={onAdicionarPessoa}
@@ -44,9 +45,14 @@ export default function App() {
             }}>
             Cadastro realizado com sucesso!
           </Snackbar>
+          
         </SafeAreaView>
+        
       </AppProvider>
+      
     </SafeAreaProvider>
+    
+  </>
   );
 }
 
@@ -55,5 +61,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ecf0f1',
     padding: 8,
-  },
+  }
 });

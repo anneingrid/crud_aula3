@@ -66,14 +66,18 @@ export function AppProvider({
   };
 
   
-  const editarPessoa = (pessoa, novoNome) => {
-    console.log(nome); 
+  const editarPessoa = (novoNome) => {
+    /*
+    {...p, nome:'x'} = {id:1, nome:'x'}
+    x=[1,2]
+    [...x, 3]
+    */
     const lista = pessoas.map((p) =>
-      p.id === pessoa.id ? { ...p, nome: novoNome } : p
+      p.id === pessoaSelecionada.id ? { ...p, nome: novoNome } : p
     );
     setPessoas(lista);
     if (onEditarPessoa) {
-      onEditarPessoa(pessoa, novoNome);
+      onEditarPessoa(pessoaSelecionada, novoNome);
     }
     
   };
@@ -116,7 +120,7 @@ export function AppProvider({
         let listaDeNovasPessoas = pessoas.filter(pessoaDaLista => pessoaDaLista.nome.startsWith(nome));
         setpessoasFiltradas(listaDeNovasPessoas);
     }
-}
+};
 
   return (
     <AppContext.Provider

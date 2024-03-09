@@ -36,7 +36,7 @@ export default function Filtro() {
           <SafeAreaView style={{ height: 55 }}>
             <TextInput
               ref={nomeRef}
-              label="Nome"
+              label="Filtrar"
               style={styles.input_nome}
               value={nome}
               onChangeText={(text) => setNome(text)}

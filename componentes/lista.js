@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, SafeAreaView, StyleSheet, FlatList } from 'react-native';
+import { View, SafeAreaView, StyleSheet, FlatList, ScrollView, } from 'react-native';
 import { List, Text, IconButton, Divider, useTheme, Avatar } from 'react-native-paper';
 import { useAppContext } from './provider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,7 +15,7 @@ import Avatarr from './avatar';
  * um botão que permite excluir o item da lista de pessoas.
  */
 export default function Lista() {
-  const { pessoas, pessoaSelecionada, selecionarPessoa, pessoasFiltradas, removerPessoa, editarPessoa, filtroAtivo  } =
+  const { pessoas, pessoaSelecionada, selecionarPessoa, pessoasFiltradas, removerPessoa, editarPessoa, filtroAtivo } =
     useAppContext();
 
   const { colors, isV3 } = useTheme();
@@ -28,11 +28,12 @@ export default function Lista() {
 
 
   const [visibleEditar, setVisibleEditar] = React.useState(false);
-  const showModalEditar = () => { 
-    setVisibleEditar(true);  };
+  const showModalEditar = () => {
+    setVisibleEditar(true);
+  };
   const hideModalEditar = () => {
     setVisibleEditar(false);
-  
+
   };
 
 
@@ -55,13 +56,13 @@ export default function Lista() {
         />
       );
     };
-    
+
     const BotaoEditar = () => {
       return (
         <IconButton
           icon="pencil"
           mode="contained"
-          onPress={() => showModalEditar(item)} 
+          onPress={() => showModalEditar(item)}
         />
       );
     };
@@ -71,7 +72,7 @@ export default function Lista() {
         title={item.nome}
         style={selecionado && styles.item_selecionado}
         left={() => (
-          <Avatarr nome={item.nome}/>
+          <Avatarr nome={item.nome} />
         )}
         onPress={() => selecionarPessoa(item)}
         right={() => (
@@ -83,50 +84,58 @@ export default function Lista() {
     );
   };
   return (
-    <View style={styles.container}>
-      <List.Section>
-        <List.Subheader>
-          <View style={styles.cabecalho}>
-            <Text style={styles.cabecalho_titulo} variant="bodyLarge">
-              Pessoas cadastradas
-            </Text>
-            {pessoas?.length > 0 && (
-              <Text variant="bodySmall">
-                Pressione um item da lista para selecionar e outra vez para
-                remover a seleção
+    <>
+      <View style={styles.container}>
+        <List.Section>
+          <List.Subheader>
+            <View style={styles.cabecalho}>
+              <Text style={styles.cabecalho_titulo} variant="bodyLarge">
+                Pessoas cadastradas
+              </Text>
+              {pessoas?.length > 0 && (
+                <Text variant="bodySmall">
+                  Pressione um item da lista para selecionar e outra vez para
+                  remover a seleção
+                </Text>
+              )}
+            </View>
+          </List.Subheader>
+        </List.Section>
+        {filtroAtivo ? (
+          <FlatList
+            data={pessoasFiltradas}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={Divider}
+            ListEmptyComponent={() => (
+              <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
+                Nenhum resultado encontrado com a filtragem
               </Text>
             )}
-          </View>
-        </List.Subheader>
-      </List.Section>
-      {filtroAtivo ? (
-        <FlatList
-          data={pessoasFiltradas}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          ItemSeparatorComponent={Divider}
-          ListEmptyComponent={() => (
-            <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
-              Nenhum resultado encontrado com a filtragem
-            </Text>
-          )}
-        />
-      ) : (
-        <FlatList
-          data={pessoas}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-          ItemSeparatorComponent={Divider}
-          ListEmptyComponent={() => (
-            <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
-              Nenhuma pessoa cadastrada com esse nome
-            </Text>
-          )}
-        />
-      )}
-      <ExcluirModal visible={visible} hideModal={hideModal} excluirPessoa={pessoaEditarExcluir} removerPessoa={removerPessoa}/>
-      <EditarModal visible={visibleEditar} hideModal={hideModalEditar} editarPessoa={pessoaEditarExcluir} functionEditar={editarPessoa}/>
+          />
+        ) : (
+          <FlatList
+            data={pessoas}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={Divider}
+            ListEmptyComponent={() => (
+              <Text variant="bodyMedium" style={styles.lista_mensagem_vazio}>
+                Nenhuma pessoa cadastrada com esse nome
+              </Text>
+            )}
+          />
+        )}
+        <ExcluirModal visible={visible} hideModal={hideModal} excluirPessoa={pessoaEditarExcluir} removerPessoa={removerPessoa} />
+        <EditarModal visible={visibleEditar} hideModal={hideModalEditar} editarPessoa={editarPessoa} />
+      </View>
+      <View style={styles.containerr}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.marqueeContainer}>
+        <Text style={styles.marqueeText}>Te amamos JACK <Text style={{color:"red"}}>❤❤❤❤❤</Text></Text>
+        <Text style={styles.marqueeText}>            #Feliz dia das mulheres #ItGirls</Text>
+      </ScrollView>
     </View>
+    </>
   );
 }
 
@@ -142,5 +151,21 @@ const styles = StyleSheet.create({
   },
   item_selecionado: {
     backgroundColor: 'lightgray',
+  },
+  marqueeContainer: {
+    paddingHorizontal: 10,
+  },
+  marqueeText: {
+    fontSize: 23,
+    color: 'purple',
+    fontWeight: 'bold',
+  },
+  containerr: {
+    backgroundColor: '#f0f0f0',
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    paddingVertical: 5,
+    alignItems:"center",
+    color:"purple"
   },
 });

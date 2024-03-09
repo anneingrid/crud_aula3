@@ -2,22 +2,22 @@ import * as React from 'react';
 import { Modal, Text, TextInput, Button } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 
-export default function EditarModal({ visible, hideModal, editarPessoa, functionEditar }) {
+export default function EditarModal({ visible, hideModal, editarPessoa }) {
     const [novoNome, setNovoNome] = React.useState(""); // Definindo novoNome usando useState
 
     const containerStyle = { backgroundColor: 'white', padding: 20 };
-
+    const fx = (text) => setNovoNome(text);
     console.log(novoNome);
     return (
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
             <View style={styles.container}>
                 <Text style={styles.text}>Editar nome</Text>
                 <TextInput
-                    onChangeText={(text) => setNovoNome(text)} // Atualizando novoNome
+                    onChangeText={fx} // Atualizando novoNome
                     value={novoNome} // Definindo o valor do TextInput como novoNome
                 />
 
-                <Button style={styles.button} icon="check" mode="contained" onPress={() => { functionEditar({ novoNome }), hideModal() }}>
+                <Button style={styles.button} icon="check" mode="contained" onPress={() => { editarPessoa(novoNome), hideModal() }}>
                     Sim
                 </Button>
                 <Button style={styles.button} icon="close" mode="contained" onPress={hideModal}>
